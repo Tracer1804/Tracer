@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -34,13 +35,13 @@
 
         // Convenience function to setup a webcam
         const flip = true; // whether to flip the webcam
-        webcam = new tmImage.Webcam(200, 200, flip); // width, height, flip
-        await webcam.setup(); // request access to the webcam
-        await webcam.play();
+        webcam = new tmImage.Camera(600, 600, flip); // width, height, flip
+        await camera.setup(); // request access to the webcam
+        await camera.play();
         window.requestAnimationFrame(loop);
 
         // append elements to the DOM
-        document.getElementById("webcam-container").appendChild(webcam.canvas);
+        document.getElementById("webcam-container").appendChild(camera.canvas);
         labelContainer = document.getElementById("label-container");
         for (let i = 0; i < maxPredictions; i++) { // and class labels
             labelContainer.appendChild(document.createElement("div"));
@@ -48,7 +49,7 @@
     }
 
     async function loop() {
-        webcam.update(); // update the webcam frame
+        camera.update(); // update the webcam frame
         await predict();
         window.requestAnimationFrame(loop);
     }
@@ -56,7 +57,7 @@
     // run the webcam image through the image model
     async function predict() {
         // predict can take in an image, video or canvas html element
-        const prediction = await model.predict(webcam.canvas);
+        const prediction = await model.predict(camera.canvas);
         for (let i = 0; i < maxPredictions; i++) {
           const result =  prediction[i].probability.toFixed(2)*100;
             const classPrediction =
@@ -67,3 +68,4 @@
 </script>
   </body>
 </html>
+
